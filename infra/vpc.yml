@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: VPC for ECS
+
+
+Resources:
+
+  infraEcsVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/26                                # Using Smallest Cidr with minimum number of IP Address
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: VPC for ECS
+
+  infraEcsSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1']   # gets the first Availability zone from the list i.e [us-east-1a,us-east-1b,etc]                       
+      VpcId: !Ref infraEcsVPC                               # Reference to the Above VPC
+      CidrBlock: 10.0.0.0/28
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: subnet1 for ECS
+
+  infraEcsSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1']   # gets the first Availability zone from the list i.e [us-east-1a,us-east-1b,etc]
+      VpcId: !Ref infraEcsVPC
+      CidrBlock: 10.0.0.16/28
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: subnet2 for ECS
+
+  infraEcsInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Internet Gateway for ECS
+
+  infraEcsAttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref infraEcsVPC
+      InternetGatewayId: !Ref infraEcsInternetGateway
+
+  infraEcsRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref infraEcsVPC
+      Tags:
+        - Key: Name
+          Value: Route Table for ECS
+
+  infraEcsRouteTableAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref infraEcsSubnet1
+      RouteTableId: !Ref infraEcsRouteTable
+
+  infraEcsRouteTableAssoc2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref infraEcsSubnet2
+      RouteTableId: !Ref infraEcsRouteTable  
+
+  infraEcsInternetRoute:
+    Type: AWS::EC2::Route
+    DependsOn: infraEcsAttachGateway                              # Depending on Internet Gateway attachment on creation
+    Properties:
+      RouteTableId: !Ref infraEcsRouteTable
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref infraEcsInternetGateway
+
+Outputs:
+
+  infraEcsVPC:
+    Description: Cloudformation VPC for ECS
+    Value: !Ref infraEcsVPC
+    Export: 
+      Name: 'infraEcsVPC-Cloudformation'                          # Export name will be used in next or another cloudformation script
+
+      
+  infraEcsSubnet1:
+    Description: Cloudformation Subnet1 for ECS
+    Value: !Ref infraEcsSubnet1
+    Export: 
+      Name: 'infraEcsSubnet1-Cloudformation'
+
+  infraEcsSubnet2:
+    Description: Cloudformation Subnet2 for ECS
+    Value: !Ref infraEcsSubnet2
+    Export: 
+      Name: 'infraEcsSubnet2-Cloudformation'    
