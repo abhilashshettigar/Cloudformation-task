@@ -7,12 +7,13 @@ Docker install
 node 
 npm
 
-# Run Project using Docker
+### Run Project using Docker
 
 Build docker image: docker build -t nodeApp .
 Run docker image:  docker run -it -p 3000:3000 --rm   //you can also use -d if you want to run detached mode
 Stop docker image running : docker stop <container-id>
 
+# AWS ECR 
 
 Create ECR Repo using AWS cli 
 
@@ -27,3 +28,7 @@ Tag Docker Image and Push Docker Image
 docker tag nodeapp:latest 1234567890.dkr.ecr.us-east-1.amazonaws.com/nodeapp:latest
 
 docker push 1234567890.dkr.ecr.us-east-1.amazonaws.com/nodeapp:latest
+
+
+## AWS ECS
+
