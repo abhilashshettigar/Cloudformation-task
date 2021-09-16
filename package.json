@@ -1,0 +1,28 @@
+{
+  "name": "cloudformation-task",
+  "version": "1.0.0",
+  "description": "Cloudformation-Task Learning for ECS and ECR with VPC and subnet in AWS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhilashshettigar/Cloudformation-task.git"
+  },
+  "keywords": [
+    "Cloudformation",
+    "ECS",
+    "ECR"
+  ],
+  "author": "Abhilash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhilashshettigar/Cloudformation-task/issues"
+  },
+  "homepage": "https://github.com/abhilashshettigar/Cloudformation-task#readme",
+  "dependencies": {
+    "express": "latest"
+  }
+}
