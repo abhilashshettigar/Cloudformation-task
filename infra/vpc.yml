@@ -16,7 +16,7 @@ Resources:
   infraEcsSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1']   # gets the first Availability zone from the list i.e [us-east-1a,us-east-1b,etc]                       
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-2']   # gets the first Availability zone from the list i.e [us-east-2a,us-east-2b,etc]                       
       VpcId: !Ref infraEcsVPC                               # Reference to the Above VPC
       CidrBlock: 10.0.0.0/28
       MapPublicIpOnLaunch: true
@@ -27,7 +27,7 @@ Resources:
   infraEcsSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1']   # gets the first Availability zone from the list i.e [us-east-1a,us-east-1b,etc]
+      AvailabilityZone: !Select [ 1, !GetAZs 'us-east-2']   # gets the first Availability zone from the list i.e [us-east-2a,us-east-2b,etc]
       VpcId: !Ref infraEcsVPC
       CidrBlock: 10.0.0.16/28
       MapPublicIpOnLaunch: true

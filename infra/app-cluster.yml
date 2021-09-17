@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Container Cluster on ECS fargate and LoadBalancer 
+
+Resources:
+
+
+  infraEcsCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: 'infraNodeApp'
+
+  infraLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: 'Infra ECS LoadBalancer'
+      Subnets:
+        - !ImportValue 'infraEcsSubnet1'
+        - !ImportValue 'infraEcsSubnet2'
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+
+  infraLoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Load balancer to infra services on ECS        
+      VpcId: !ImportValue 'infraEcsVPC'
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0

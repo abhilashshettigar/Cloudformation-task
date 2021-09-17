@@ -37,3 +37,13 @@ docker push 1234567890.dkr.ecr.us-east-1.amazonaws.com/nodeapp:latest
 
 ## AWS ECS
 
+Creating VPC for ECS using cloudformation
+
+```sh
+aws cloudformation create-stack --stack-name vpc-ecs --template-body file://infra/vpc.yml --region us-east-2
+```
+Creating IAM for ECS using Cloudformation
+
+```sh
+aws cloudformation create-stack --stack-name iam-ecs --template-body file://infra/iam.yml --capabilities CAPABILITY_NAMED_IAM
+```
